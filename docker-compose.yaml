@@ -1,0 +1,44 @@
+services:
+  user_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: noleg
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+
+  order_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: noleg
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+
+  payment_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: noleg
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5434:5432"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      CLUSTER_ID: EmptNWtoR4GGWx-BH6nGLQ
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+
